@@ -9,9 +9,8 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', 'HomeController@showWelcome');
 
 // creates new page
 // call the page up enter reddit.dev/sayhello in the URL
@@ -23,10 +22,10 @@ Route::get('/say-hello', function () {
 });
 
 // dont use capitals, use - instead
-Route::get('/say-hello/{name}', function($name)
-{
-    return "Hello, $name!";
-});
+//Route::get('/say-hello/{name}', function($name)
+//{
+  //  return "Hello, $name!";
+//});
 
 // optional perams
 // hits the first path when nothing is passed in for the name
@@ -43,16 +42,6 @@ Route::get('say-hello/{name}', function($name) {
 	}
 	return "Hello, $name";
 });
-
-Route::get('/uppercase/{word?}', function($word = "word") {
-	$data ['word'] = $word;
-  return view ('uppercase') ->with($data);
-});
-
-Route::get('/increment/{num?}', function($num = 2) {
-	return ++$num;
-});
-
-Route::get('/add/{a?}/{b?}', function($a = 1, $b = 1) {
-	return $a + $b;
-});
+Route::get('/sayhello/{name}','HomeController@sayHello');
+Route::get('/uppercase/{word}', 'HomeController@upperCase');
+Route::get('/increment/{num}', 'HomeController@incrementThis');
