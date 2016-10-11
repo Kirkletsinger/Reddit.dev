@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -10,12 +9,49 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/sayhello/{name}', function($name){
-  return'Hello Lassen';
+// creates new page
+// call the page up enter reddit.dev/sayhello in the URL
+Route::get('/say-hello', function () {
+	$a = 5;
+	$b = 6;
+	// this is all it will put on a page
+	return "Hello, Codeup! " . $a * $b;
+});
 
+// dont use capitals, use - instead
+Route::get('/say-hello/{name}', function($name)
+{
+    return "Hello, $name!";
+});
+
+// optional perams
+// hits the first path when nothing is passed in for the name
+	// so in other words comment out the first Route::get and it will work
+Route::get('/say-hello/{name?}', function($name = 'World') {
+	return "Hello, $name!";
+});
+
+
+// redirecting
+Route::get('say-hello/{name}', function($name) {
+	if ($name == "steven") {
+		return redirect('/');
+	}
+	return "Hello, $name";
+});
+
+Route::get('/uppercase/{word?}', function($word = "word") {
+	return strtoupper($word);
+});
+
+Route::get('/increment/{num?}', function($num = 2) {
+	return ++$num;
+});
+
+Route::get('/add/{a?}/{b?}', function($a = 1, $b = 1) {
+	return $a + $b;
 });
