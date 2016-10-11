@@ -45,7 +45,8 @@ Route::get('say-hello/{name}', function($name) {
 });
 
 Route::get('/uppercase/{word?}', function($word = "word") {
-	return strtoupper($word);
+	$data ['word'] = $word;
+  return view ('uppercase') ->with($data);
 });
 
 Route::get('/increment/{num?}', function($num = 2) {
