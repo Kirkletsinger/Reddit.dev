@@ -110,6 +110,7 @@ Route::get('/increment/{num}', 'HomeController@increment');
 // this route conntects to the PostController.php file
 //index GET
 Route::resource('posts', 'PostsController');
+Route::resource('users', 'UserController');
 // //create GET
 // Route::resource('posts/create', 'PostsController');
 // //store POST

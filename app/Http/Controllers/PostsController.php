@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\User;
 use App\Models\Post;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -18,8 +18,8 @@ class PostsController extends Controller
     // this will be the first method that runs when the class is called
     public function index()
     {
-        $posts = Post::all();
-        $data ['posts'] = $posts;
+
+        $data ['posts'] = Post::paginate(4);
 
         // this is the same as foreach ($posts->attributes as $post) {}
         // foreach($posts as $post) {
@@ -37,6 +37,11 @@ class PostsController extends Controller
      */
     public function create()
     {
+        $rules = [
+            'title'   => 'required|min:5',
+            'url'     => 'required',
+            'content' => 'required',
+        ];
         return view('posts.create');
     }
 
@@ -46,15 +51,25 @@ class PostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+
+public function store(Request $request)
     {
-        $post = new Post;
+        // associative array whose keys are input names in the request
+        // values are the validation rules
+        $rules = [
+            'title'   => 'required|min:5',
+            'url'     => 'required',
+            'content' => 'required',
+        ];
+        // will redirect back with $errors object populated if validation fails
+        $this->validate($request, $rules);
+        $post = new Post();
         $post->title = $request->title;
         $post->url = $request->url;
         $post->content = $request->content;
-        $post->created_by = 1;
+        $post->created_by = User::first()->id;
         $post->save();
-        return redirect()->action('PostsController@show');
+        return redirect()->action('PostsController@show', $post->id);
     }
 
     /**
@@ -95,6 +110,12 @@ class PostsController extends Controller
     // returns the
     public function update(Request $request, $id)
     {
+      $rules = [
+          'title'   => 'required|min:5',
+          'url'     => 'required',
+          'content' => 'required',
+      ];
+
         $post = Post::find($id);
         $post->title = $request->title;
         $post->url = $request->url;
